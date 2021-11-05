@@ -13,9 +13,9 @@ environment:
       CustomEnvVar1: CustomEnvVar1Value_ChangedBy_job-build_main
       CustomEnvVar3: CustomEnvVar3Value_job-build_main
 
-    - job_name: other_task_dev
-    - job_name: other_dependend_task_dev
-      job_depends_on: other_task_dev
+    - job_name: added_node_task_dev
+    - job_name: added_node_dependend_task_dev
+      job_depends_on: added_node_task_dev
 
 build_script:
   - ps: | 
@@ -67,7 +67,7 @@ for:
 
     build_script:
       - ps: | 
-          Write-Host "Other task script"
+          Write-Host "Added Node  task script"
           Write-Host "Branch: $env:APPVEYOR_REPO_BRANCH"
           Write-Host "JobName: $env:APPVEYOR_JOB_NAME"
           Write-Host "CustomEnvVar1: $env:CustomEnvVar1"
@@ -83,9 +83,12 @@ for:
       only:
         - dev
 
+    only_commits:
+      message: /Added node.*/
+
     build_script:
       - ps: | 
-          Write-Host "Other dependend task script"
+          Write-Host "Added Node dependend task script"
           Write-Host "Branch: $env:APPVEYOR_REPO_BRANCH"
           Write-Host "JobName: $env:APPVEYOR_JOB_NAME"
           Write-Host "CustomEnvVar1: $env:CustomEnvVar1"
