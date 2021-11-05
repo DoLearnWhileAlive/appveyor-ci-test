@@ -1,0 +1,93 @@
+
+image: Visual Studio 2019
+
+environment:
+  CustomEnvVar1: CustomEnvVar1Value
+  CustomEnvVar2: CustomEnvVar2Value
+
+  matrix:
+    - job_name: build_dev
+      CustomEnvVar1: CustomEnvVar1Value_ChangedBy_job-build_dev
+
+    - job_name: build_main
+      CustomEnvVar1: CustomEnvVar1Value_ChangedBy_job-build_main
+      CustomEnvVar3: CustomEnvVar3Value_job-build_main
+
+    - job_name: other_task_dev
+    - job_name: other_dependend_task_dev
+      job_depends_on: other_task_dev
+
+build_script:
+  - ps: | 
+      Write-Host "General Build script"
+      Write-Host "Branch: $env:APPVEYOR_REPO_BRANCH"
+      Write-Host "JobName: $env:APPVEYOR_JOB_NAME"
+      Write-Host "CustomEnvVar1: $env:CustomEnvVar1"
+      Write-Host "CustomEnvVar2: $env:CustomEnvVar2"
+      Write-Host "CustomEnvVar3: $env:CustomEnvVar3"
+
+test: off  
+
+for:
+  -
+    matrix:
+      only:
+        - job_name: build_dev
+
+    branches:
+      only:
+        - dev
+
+    skip_commits:
+      message: /Added node.*/
+
+  -
+    matrix:
+      only:
+        - job_name: build_main
+
+    branches:
+      only:
+        - main
+
+    skip_commits:
+      message: /Added node.*/
+
+  -
+    matrix:
+      only:
+        - job_name: other_task
+
+    branches:
+      only:
+        - dev
+      
+    only_commits:
+      message: /Added node.*/
+
+    build_script:
+      - ps: | 
+          Write-Host "Other task script"
+          Write-Host "Branch: $env:APPVEYOR_REPO_BRANCH"
+          Write-Host "JobName: $env:APPVEYOR_JOB_NAME"
+          Write-Host "CustomEnvVar1: $env:CustomEnvVar1"
+          Write-Host "CustomEnvVar2: $env:CustomEnvVar2"
+          Write-Host "CustomEnvVar3: $env:CustomEnvVar3"
+
+  -
+    matrix:
+      only:
+        - job_name: other_dependend_task_dev
+
+    branches:
+      only:
+        - dev
+
+    build_script:
+      - ps: | 
+          Write-Host "Other dependend task script"
+          Write-Host "Branch: $env:APPVEYOR_REPO_BRANCH"
+          Write-Host "JobName: $env:APPVEYOR_JOB_NAME"
+          Write-Host "CustomEnvVar1: $env:CustomEnvVar1"
+          Write-Host "CustomEnvVar2: $env:CustomEnvVar2"
+          Write-Host "CustomEnvVar3: $env:CustomEnvVar3"
