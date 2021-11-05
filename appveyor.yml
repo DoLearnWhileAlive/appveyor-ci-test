@@ -56,7 +56,7 @@ for:
   -
     matrix:
       only:
-        - job_name: other_task
+        - job_name: other_task_dev
 
     branches:
       only:
