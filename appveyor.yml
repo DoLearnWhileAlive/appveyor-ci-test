@@ -31,6 +31,9 @@ build_script:
       Write-Host "CustomEnvVar2: $env:CustomEnvVar2"
       Write-Host "CustomEnvVar3: $env:CustomEnvVar3"
       Write-Host "ProgressPreference = $($ProgressPreference)"
+      iwr -uri https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.1%2B12/OpenJDK17U-jdk_x86-32_windows_hotspot_17.0.1_12.zip -outfile .\test.zip
+      mkdir .\test
+      Expand-Archive -Path .\test.zip -DestinationPath .\test\
 
 test: off  
 
