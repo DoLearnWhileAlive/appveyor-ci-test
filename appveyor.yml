@@ -30,6 +30,7 @@ build_script:
       Write-Host "CustomEnvVar1: $env:CustomEnvVar1"
       Write-Host "CustomEnvVar2: $env:CustomEnvVar2"
       Write-Host "CustomEnvVar3: $env:CustomEnvVar3"
+      Write-Host "ProgressPreference = $($ProgressPreference)"
 
 test: off  
 
